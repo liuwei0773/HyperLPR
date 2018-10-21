@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 project(SwiftPR)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(OpenCV 3.3.0 REQUIRED)
 include_directories( ${OpenCV_INCLUDE_DIRS})
 include_directories(include)
@@ -52,6 +53,12 @@ add_executable(TEST_SEGMENTATIONFREE ${SRC_SEGMENTATIONFREE} tests/test_segmenta
 target_link_libraries(TEST_SEGMENTATIONFREE ${OpenCV_LIBS})
 
 #TEST_PIPELINE
-
 add_executable(TEST_PIPLINE ${SRC_DETECTION} ${SRC_FINEMAPPING} ${SRC_FASTDESKEW} ${SRC_SEGMENTATION} ${SRC_RECOGNIZE} ${SRC_PIPLINE} ${SRC_SEGMENTATIONFREE} tests/test_pipeline.cpp)
 target_link_libraries(TEST_PIPLINE ${OpenCV_LIBS})
+
+#MY_TEST
+add_executable(my_test ${SRC_DETECTION} ${SRC_FINEMAPPING} ${SRC_FASTDESKEW} ${SRC_SEGMENTATION} ${SRC_RECOGNIZE} ${SRC_PIPLINE} ${SRC_SEGMENTATIONFREE} tests/my_test.cpp)
+target_link_libraries(my_test ${OpenCV_LIBS})
+
+add_library(lpr SHARED ${SRC_DETECTION} ${SRC_FINEMAPPING} ${SRC_FASTDESKEW} ${SRC_SEGMENTATION} ${SRC_RECOGNIZE} ${SRC_PIPLINE} ${SRC_SEGMENTATIONFREE})
+target_link_libraries(lpr ${OpenCV_LIBS})
